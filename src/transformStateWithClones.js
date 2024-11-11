@@ -8,9 +8,11 @@
  */
 function transformStateWithClones(state, actions) {
   // write code here
-    const result = [];  // Array to store the state clones
-    for (const action of actions) {
-    let newState = { ...state };  
+  const result = [];
+  let currentState = { ...state };
+
+  for (const action of actions) {
+    let newState = { ...currentState };
 
     switch (action.type) {
       case 'addProperties':
@@ -24,14 +26,14 @@ function transformStateWithClones(state, actions) {
         break;
         
       case 'clear':
-        // Clear the entire state
         newState = {};
         break;
     }
+
     result.push(newState);
-    state = newState;
+    currentState = newState;
   }
-  
+
   return result;
 }
 
