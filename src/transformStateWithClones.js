@@ -8,23 +8,31 @@
  */
 function transformStateWithClones(state, actions) {
   // write code here
-    for (const key in actions) {
-    switch (actions[key].type) {
+    const result = [];  // Array to store the state clones
+    for (const action of actions) {
+    let newState = { ...state };  
+
+    switch (action.type) {
       case 'addProperties':
-        for (const extraKey in actions[key].extraData) {
-          state[extraKey] = actions[key].extraData[extraKey];
-        }
+        newState = { ...newState, ...action.extraData };
         break;
+        
       case 'removeProperties':
-        for (const extraKey in actions[key].keysToRemove) {
-          delete state[actions[key].keysToRemove[extraKey]];
+        for (const key of action.keysToRemove) {
+          delete newState[key];
         }
         break;
+        
       case 'clear':
-        Object.keys(state).forEach(currentKey => delete state[currentKey]);
+        // Clear the entire state
+        newState = {};
         break;
     }
+    result.push(newState);
+    state = newState;
   }
+  
+  return result;
 }
 
 module.exports = transformStateWithClones;
